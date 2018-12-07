@@ -1,0 +1,24 @@
+#basic association analysis guide#
+#Oracle Data Mining Chapter https://docs.oracle.com/cd/E18283_01/datamine.112/e16808/market_basket.htm: 
+
+Basic description-
+Association is a data mining function that discovers the probability of the co-occurrence of items in a collection. The relationships between co-occurring items are expressed as association rules.#
+
+The results of an association model are the rules that identify patterns of association within the data. Association rules can be ranked by support (How often do these items occur together in the data?) and confidence (How likely are these items to occur together in the data?).
+
+Association Analysis applications:
+Unlike other data mining functions, association is transaction-based. In transaction processing, a case consists of a transaction such as a market basket or Web session. The collection of items in the transaction is an attribute of the transaction. Other attributes might be the date, time, location, or user ID associated with the transaction.
+
+The collection of items in the transaction is a multi-record attribute. Transactional data is said to be in multi-record case format. 
+
+Association rules are often used to analyze sales transactions. For example, it might be noted that customers who buy cereal at the grocery store often buy milk at the same time. In fact, association analysis might find that 85% of the checkout sessions that include cereal also include milk. This relationship could be formulated as the following rule: Cereal implies milk with 85% confidence#
+
+This application of association modeling is called market-basket analysis. It is valuable for direct marketing, sales promotions, and for discovering business trends. Market-basket analysis can also be used effectively for store layout, catalog design, and cross-sell.
+
+In e-commerce applications, association rules may be used for Web page personalization. An association model might find that a user who visits pages A and B is 70% likely to also visit page C in the same session. Based on this rule, a dynamic link could be created for users who are likely to be interested in page C. The association rule could be expressed as follows: A and B imply C with 70% confidence 
+
+#video tutorial: https://www.youtube.com/watch?v=WGlMlS_Yydk#
+
+#rpackages from http://r-statistics.co/Association-Mining-With-R.html
+R package called ‘arules’ from Michael Hahsler who has implemented the algorithm in R.
+The apriori() generates the most relevent set of rules from a given transaction data. It also shows the support, confidence and lift of those rules.
