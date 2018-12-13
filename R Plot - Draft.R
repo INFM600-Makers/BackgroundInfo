@@ -32,7 +32,7 @@ ggplot(LAFinal,aes(LAFinal$trip_route_category,LAFinal$passholder_type))+geom_co
 
 #Q3. How do busy hours affect the Bicycle patterns?
 #For this question and the sheer vastness of the probably factors, we have at first taken the summary() #function to find the busiest start and end stations for LA to determine the stations which need to be most #populated with bicycles.
-
+summary(CGFinal)
 
 #Following are additional plots for contextual research and analysis of the system. Overall, the following plots are responsible for relations between
 #member type, total bike usage, route type, gender distribution and age distribution along with relation between ridership and temperature as well
