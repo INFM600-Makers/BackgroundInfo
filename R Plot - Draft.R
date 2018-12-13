@@ -75,3 +75,9 @@ summary(LAFinal)
 #7th & Flower          
 #Union Station West Portal            
 #Ocean Front Walk & North Venice     
+
+
+
+#Following link has the plots that we have generated using these functions and scripts:
+# https://drive.google.com/open?id=174rK-AyEufKip4_zndvrjifEuc1t5P4n
+#This link is accessible by UMD IDs only
