@@ -27,19 +27,22 @@ hist(Dataset$durationInSeconds) #Right skewed data and Unimodal
 hist(Dataset$plan_duration)     #Right skewed data and Unimodal with an outlier
 
 #Inspecting the histograms for the above variables, we see that #they are skewed in nature
-#with the extremes dwindling to the left and hence to understand #the data better and the most common
-#trip duration and plan duration relationsips we calculate the #mean as central tendency
+#with the extremes dwindling to the left and hence to understand the data better and the most common
+#trip duration and plan duration relationsips we calculate the mean as central tendency
 #median and standard deviation for each variable using commands #such as 
 #mean(variable), median(variable) and sd(variable). We also add #na.rm=TRUE to remove null values present
 #in the dataset so as to draw actual means and deviations without #null values skewing results
+#Here our purpose of finding descriptive statistics of the Trip duration is to analyze the average trip length of a user
+#and plan duration statistics to analyze the average plan duration of a user, which has come up to be 28.55 which means
+#an average user takes a monthly plan and makes a trip of 36.7 minutes
 
-mean(Dataset$durationInSeconds, na.rm = TRUE)    #value = 2207.17
-sd(Dataset$durationInSeconds, na.rm = TRUE)      #value = 7383.015
-median(Dataset$durationInSeconds, na.rm = TRUE)  #value = 720
+mean(Dataset$durationInSeconds, na.rm = TRUE)    #value = 2207.17 = 36.7 minutes
+sd(Dataset$durationInSeconds, na.rm = TRUE)      #value = 7383.015 = 123.05 minutes = roughly 4 hours
+median(Dataset$durationInSeconds, na.rm = TRUE)  #value = 720 = 12 minutes
 
-mean(Dataset$plan_duration, na.rm = TRUE)        #value = 28.55
-sd(Dataset$plan_duration, na.rm = TRUE)          #value = 62.16511
-median(Dataset$plan_duration, na.rm = TRUE)      #value = 30
+mean(Dataset$plan_duration, na.rm = TRUE)        #value = 28.55 days
+sd(Dataset$plan_duration, na.rm = TRUE)          #value = 62.16511 days
+median(Dataset$plan_duration, na.rm = TRUE)      #value = 30 days
 
 
 #We use the plot function to determine the relationship between #trip duration and 
@@ -60,10 +63,15 @@ scatter.smooth(Dataset$durationInSeconds, Dataset$plan_duration)
 #if these are vectors. If x and y are matrices then the #covariances (or correlations) between 
 #the columns of x and the columns of y are computed.
 
-cor(Dataset$durationInSeconds, Dataset$plan_duration) #value = -0.071 implying the relationship is almost linear and strongly correlated
+cor(Dataset$durationInSeconds, Dataset$plan_duration) 
+
+#value = -0.071 implying the relationship is almost linear and strongly correlated implying that the 
+#users trip duration and plan duration have a relationship. It might be that users who have monthly plans
+#are taking longer trips or vice versa. We will analyze this in future.
 
 
 #We now attempt to build linear regression model on full data #using the lm() function.
+#We use this to understand how much our predictor variable (Duration in seconds) affects our response variable(plan_duration)
 #We also use the summary() function to find the Residual standard #error, Significance codes and residual 
 #standard error
 
