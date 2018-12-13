@@ -1,2 +1,2 @@
 # BackgroundInfo
-All deliverables and reports INFM600 team Makers final project.
+This repository contains all the final deliverables and resources needed for the Bike Share Analysis Project for INFM 600
