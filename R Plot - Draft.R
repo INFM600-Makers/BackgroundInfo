@@ -2,6 +2,11 @@
 
 #Loading the data in R as comma separated values and storing in variable 'LAFinal'
 LAFinal <- read.csv(file.choose())
+DCFinal <- read.csv(file.choose())
+CGFinal <- read.csv(file.choose())
+CGFinal <- read.csv(file.choose())
+DCFinal <- read.csv(file.choose())
+LAFinal <- read.csv(file.choose())
 View(LAFinal)
 
 #Taking count of all values present in the LA dataset
@@ -11,6 +16,20 @@ nrow(LAFinal)  #93378 values
 Deduped <- unique(LAFinal)
 nrow(Deduped)     #93105 values left
 
+#We have to take date from the date-time stamp separately for hourly and daily analysis. For this we have used as.Date and lubridate packages
+
+LAFinal$Date<-as.Date(LAFinal$Start.date, format = "%m/%d/%Y")
+CGFinal$Date<-as.Date(CGFinal$Start.date, format = "%m/%d/%Y")
+DCFinal$Date<-as.Date(DCFinal$Start.date, format = "%m/%d/%Y")
+
+LAFinal$WDAY<-wday(LAFinal$Date, abbr = TRUE, label = TRUE)
+DCFinal$WDAY<-wday(DCFinal$Date, abbr = TRUE, label = TRUE)
+CGFinal$WDAY<-wday(CGFinal$Date, abbr = TRUE, label = TRUE)
+
+LAFinal$WDAY<-Hour(LAFinal$Start.date)
+DCFinal$WDAY<-Hour(DCFinal$Start.date)
+CGFinal$WDAY<-Hour(CGFinal$Start.date)
+
 #The following plot function uses ggplot to derive a relation between the hours of the day the bikes are #operated and considered months to check if there is any difference of usage in these months
 ggplot(LAFinal, aes(LAFinal$Month, LAFinal$Hour))+ geom_count(col="maroon",show.legend = F) + labs(x="Month", y='Hours of Day', title = "Monthly Bike Usage - Hourly Distribution")
 
@@ -19,7 +38,9 @@ ggplot(LAFinal, aes(LAFinal$Month, LAFinal$Hour))+ geom_count(col="maroon",show.
 
 #For the above question, we try to find relationships between various factors such as trip duration, plan #holder types, busiest days of week and busiest stations.The following plot function uses ggplot to derive #a relation between the hours of the day the bikes are operated and days of the week to see a relation #between them and try to find a pattern or relation between the trip duration and the route trip to #understand the which users have round trips and how many have one way trips w.r.t the trip duration #undertaken
 
-ggplot(LAFinal,aes(LAFinal$trip_route_category,LAFinal$duration))+geom_jitter(col="salmon",show.legend = F) + labs(x="Route Type", y='Trip Duration’', title = "Trip Duration and Route Category relation")
+ggplot(LAFinal,aes(LAFinal$Trip.route,LAFinal$Duration))+geom_jitter(col="#008081",show.legend = F) + labs(x="Route Type", y='Trip Duration’', title = "Trip Duration and Route Category relation")
+
+ggplot(LAFinal,aes(LAFinal$Trip.route,LAFinal$Duration))+geom_jitter(col="#008081",show.legend = F) + labs(x="Route Type", y='Trip Duration’', title = "Trip Duration and Membership Relationship")
 
 #we try and analyze if there is any relation between  busy hours of the day and busy days of the week and #to understand if any of the relationships are consistent or exponential in nature. 
 
@@ -37,9 +58,11 @@ summary(CGFinal)
 #Following are additional plots for contextual research and analysis of the system. Overall, the following plots are responsible for relations between
 #member type, total bike usage, route type, gender distribution and age distribution along with relation between ridership and temperature as well
 
-ggplot() + geom_col(data=LAFinal, aes(x=LAFinal$Date, y = LAFinal$Duration/360), color="darkcyan") + geom_line(data=LAWeather, aes(x=LAWeather$Date, y = LAWeather$Avg.Temp),size =2, color="red") + labs(x="Month", y="Duration of Trips/ Avg. Temperature", title = "LA - Trip Duration (Mutiple of 6 hours) Distribution vs Temperature Distribution")
+ggplot() + geom_col(data=LAFinal, aes(x=LAFinal$Date, y = LAFinal$Duration/360), color="darkcyan") + geom_line(data=LAWeather, aes(x=LAWeather$Date, y = LAWeather$Avg.Temp),size =2, color="red") + labs(x="Month", y="Duration of Trips/ Avg. Temperature", title = "LA - Total Bike Usage vs Temperature Distribution over Quarter 2")
 
-ggplot() + geom_col(data=DCFinal, aes(x=DCFinal$Date, y = DCFinal$Duration/1800), color="darkcyan") + geom_line(data=DCWeather, aes(x=DCWeather$Date, y = DCWeather$Avg.Temp),size =2, color="red") + labs(x="Month", y="Duration of Trips/ Avg. Temperature", title = "DC - Trip Duration (Mutiple of 60 hours) Distribution vs Temperature Distribution")
+ggplot() + geom_col(data=DCFinal, aes(x=DCFinal$Date, y = DCFinal$Duration/1800), color="darkcyan") + geom_line(data=DCWeather, aes(x=DCWeather$Date, y = DCWeather$Avg.Temp),size =2, color="red") + labs(x="Month", y="Duration of Trips/ Avg. Temperature", title = "DC - Total Bike Usage vs Temperature Distribution over Quarter 2")
+
+ggplot() + geom_col(data=CGFinal, aes(x=CGFinal$Date, y = CGFinal$Duration/1800), color="darkcyan") + geom_line(data=CGWeather, aes(x=CGWeather$Date, y = CGWeather$Avg.Temp),size =2, color="red") + labs(x="Month", y="Duration of Trips/ Avg. Temperature", title = "CG - Total Bike Usage vs Temperature Distribution over Quarter 2")
 
 ggplot(LAFinal, aes(LAFinal$Member.type)) + geom_bar(fill = "#008081") +labs(title = "LA - Bike Usage by Customer Type", x="Customer Type", y="Usage Count")
 
@@ -47,13 +70,17 @@ ggplot(DCFinal, aes(DCFinal$Member.type)) + geom_bar(fill = "#008081") +labs(tit
 
 ggplot(CGFinal, aes(CGFinal$Member.type)) + geom_bar(fill = "#008081") +labs(title = "CG - Bike Usage by Customer Type", x="Customer Type", y="Usage Count")
 
+ggplot(CGFinal, aes(CGFinal$Gender)) + geom_bar(fill = "#008081") +labs(title = "CG - Bike Usage by Customer Gender", x="Gender", y="Usage Count")
+
 ggplot(LAFinal,aes(LAFinal$Trip.route,LAFinal$Member.type))+geom_jitter(col="#008081",show.legend = F, size = 0.5) + labs(x="Route Category", y="Pass Holder", title = "LA - Membership Distribution based on Route")
 
 ggplot(LAFinal, aes(LAFinal$Month, LAFinal$Hour))+ geom_count(col="maroon",show.legend = F) + labs(x="Month", y='Hours of Day', title = "Monthly Bike Usage - Hourly Distribution")
 
 ggplot(DCFinal, aes(DCFinal$WDAY, DCFinal$Hour))+ geom_count(col="#008081",show.legend = F) + labs(x="Day of Week", y='Hour of Day', title = "DC - Weekly Bike Usage - Hourly Distribution")
 
-ggplot(LAFinal,aes(LAFinal$Member.type,LAFinal$Duration))+geom_jitter(col="#008081",show.legend = F) + labs(x="Member Type", y='Trip Duration', title = "LA - Trip Duration and Membership Relationship")
+ggplot(LAFinal, aes(LAFinal$WDAY, LAFinal$Hour))+ geom_count(col="#008081",show.legend = F) + labs(x="Day of Week", y='Hour of Day', title = "LA - Weekly Bike Usage - Hourly Distribution")
+
+ggplot(CGFinal, aes(CGFinal$WDAY, CGFinal$Hour))+ geom_count(col="#008081",show.legend = F) + labs(x="Day of Week", y='Hour of Day', title = "CG - Weekly Bike Usage - Hourly Distribution")
 
 
 
@@ -76,6 +103,7 @@ summary(LAFinal)
 #Union Station West Portal            
 #Ocean Front Walk & North Venice     
 
+#Similarly we did this for CG and DC as well
 
 
 #Following link has the plots that we have generated using these functions and scripts:
